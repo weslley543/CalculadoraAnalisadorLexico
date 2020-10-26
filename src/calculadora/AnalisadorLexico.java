@@ -20,6 +20,10 @@ public class AnalisadorLexico {
         this.lexemas = new ArrayList();
 
     }
+    
+    public void cleanLexemas(){
+        this.lexemas.clear();
+    }
 
     public void analizarExpressao(String expressao) {
         Lexema aux = null;
@@ -84,8 +88,10 @@ public class AnalisadorLexico {
                 lexemas.add(aux);
             }
         }
-        for (int i = 0; i < lexemas.size(); i++) {
-            System.out.println(lexemas.get(i).descIdentificador + " " + lexemas.get(i).indentificador);
-        }
+        
+        currentToken.delete(0, currentToken.length());
+//        for (int i = 0; i < lexemas.size(); i++) {
+//            System.out.println(lexemas.get(i).descIdentificador + " " + lexemas.get(i).indentificador);
+//        }
     }
 }

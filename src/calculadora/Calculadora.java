@@ -16,9 +16,10 @@ public class Calculadora {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AnalisadorLexico al = new AnalisadorLexico();
-        al.analizarExpressao("a+b*5");
-        
+//        AnalisadorLexico al = new AnalisadorLexico();
+//        al.analizarExpressao("8.3+7*5");
+        UIPrincipal principal = new UIPrincipal();
+        principal.setVisible(true);   
     }
     
 }
