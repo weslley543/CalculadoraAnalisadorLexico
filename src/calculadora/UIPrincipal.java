@@ -6,7 +6,14 @@
 package calculadora;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -39,6 +46,7 @@ public class UIPrincipal extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        openFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Giulia Campos e Weslley Campos");
@@ -80,6 +88,13 @@ public class UIPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table);
 
+        openFileButton.setText("Abrir Arquivo");
+        openFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openFileButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,6 +109,8 @@ public class UIPrincipal extends javax.swing.JFrame {
                             .addComponent(expressaoField, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(18, 18, 18)
                         .addComponent(startButton)
+                        .addGap(79, 79, 79)
+                        .addComponent(openFileButton)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator1)
@@ -110,7 +127,8 @@ public class UIPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(expressaoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startButton))
+                    .addComponent(startButton)
+                    .addComponent(openFileButton))
                 .addGap(18, 18, 18)
                 .addComponent(errorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
@@ -151,6 +169,50 @@ public class UIPrincipal extends javax.swing.JFrame {
             expressaoField.setBackground(Color.red); //input vermelho
         }
     }//GEN-LAST:event_startButtonActionPerformed
+
+    private void openFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileButtonActionPerformed
+        JFileChooser jFile = new JFileChooser();
+        int returnVal = jFile.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = jFile.getSelectedFile();
+            String a[] = file.getAbsolutePath().split("\\.");
+
+            if ("txt".equals(a[a.length - 1])) {
+                try{
+                    String data = new String(Files.readAllBytes(file.toPath())); //Armazena os elementos do arquivo
+                    String linhas[] = data.split("\r\n"); //Separa as linhas do arquivo
+                    DefaultTableModel model = (DefaultTableModel) table.getModel(); //pega a tabela
+
+                    for (String linha : linhas) {
+                        try{
+                            al.analizarExpressao(linha);
+                            ArrayList<Lexema> lexemasProduzidos = al.lexemas;
+                            
+                            if(table.getRowCount() > 0){ //se tem elementos na tabela, remove
+                                model.getDataVector().removeAllElements();
+                            }
+                            
+                            for (int i = 0; i < lexemasProduzidos.size(); i++) {
+                                Object[] linhaTable = new Object[2];
+                                linhaTable[0] = lexemasProduzidos.get(i).descIdentificador;
+                                linhaTable[1] = lexemasProduzidos.get(i).indentificador;
+                                model.addRow(linhaTable); //adiciona linha a linha na tabela
+                            }
+                        }catch(Error e){
+                            String msg = e.toString(); 
+                            errorMessage.setText(msg); //exibir msg de erro
+                        }
+                    }
+                }catch(IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro na leitura do arquivo " + ex);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Erro na leitura do arquivo, deve ser do tipo txt");
+            }
+        }
+    }//GEN-LAST:event_openFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,6 +255,7 @@ public class UIPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton openFileButton;
     private javax.swing.JButton startButton;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
