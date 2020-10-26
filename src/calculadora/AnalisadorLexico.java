@@ -41,7 +41,7 @@ public class AnalisadorLexico {
                     lexemas.add(aux);
 
                 }else{
-                    throw new Error("O caractere inserido não é nenhum dos válidos verifique a expressão");
+                    throw new Error("O caractere" + cur +"inserido não é nenhum dos válidos verifique a expressão");
                 }
             }
             currentToken = new StringBuffer();
@@ -74,7 +74,7 @@ public class AnalisadorLexico {
                 case ' ':
                     continue;
                 default :
-                    throw new Error("O caractere inserido não é nenhum dos válidos verifique a expressão");
+                    throw new Error("O caractere " + "'"+chr+ "'"+" inserido não é nenhum dos válidos verifique a expressão");
 
             }
 
