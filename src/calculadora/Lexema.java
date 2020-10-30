@@ -9,13 +9,10 @@ package calculadora;
  *
  * @author wesll
  */
-public class Lexema {
-    public String indentificador;
-    public String descIdentificador;
+public class Lexema extends Lex {
 
     public Lexema(String indentificador, String simboloIdentificador) {
-        this.indentificador = indentificador;
-        this.descIdentificador = simboloIdentificador;
+        super(indentificador, simboloIdentificador);
     }
     
     
