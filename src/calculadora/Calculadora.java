@@ -17,10 +17,9 @@ public class Calculadora {
      */
     public static void main(String[] args) {
         AnalisadorLexico al = new AnalisadorLexico();
-        al.analizarExpressao("8.3+7*5");
-//        UIPrincipal principal = new UIPrincipal();;;
-//        principal.setVisible(true);   
-          al.analisarExpressaoIndicandoErros("C:\\Users\\wesll\\Documents\\NetBeansProjects\\CalculadoraAnalisadorLexico\\src\\calculadora\\simbolosaceitos.txt");
+        UIPrincipal principal = new UIPrincipal();
+        principal.setVisible(true);   
+//        al.analisarExpressaoIndicandoErros("C:\\Users\\wesll\\Documents\\NetBeansProjects\\CalculadoraAnalisadorLexico\\src\\calculadora\\simbolosaceitos.txt");
     }
     
 }

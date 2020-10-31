@@ -103,22 +103,24 @@ public class AnalisadorLexico {
             int linha = 1;
             
             this.sc = new Scanner(new FileReader(diretorio));
+            
             while (sc.hasNextLine()) {
                 String expressao = sc.nextLine();
                 LexemaComErros aux = null;
                 int i;
+                ArrayList<Integer> colunas = new ArrayList();
                 for (i = 0; i < expressao.length(); i++) {
                 
                     String cur = expressao.substring(i, i + 1);
                     if (cur.matches("[0-9.]")) {
-                        
+                        colunas.add(i);
                         currentToken.append(cur);
                         continue;
                     } else if (currentToken.length() > 0) {
                         String token = currentToken.toString();
                         if (token.matches("[0-9]+|[0-9]+\\.[0-9]+|[0-9]+[eE][0-9]+")) {
                            
-                            aux = new LexemaComErros("NUM", token, linha, i);
+                            aux = new LexemaComErros("NUM", token, linha, colunas.get(0));
                             lexErros.add(aux);
 
                         }
@@ -160,12 +162,16 @@ public class AnalisadorLexico {
                     }
 
                     lexErros.add(aux);
+                    int size = colunas.size();
+                    for(int j = 0; j < size; j++){
+                        colunas.remove(0);
+                    }
                 }
 
                 if (currentToken.length() > 0) {
                     String token = currentToken.toString();
                     if (token.matches("[0-9]+|[0-9]+\\.[0-9]+|[0-9]+[eE][0-9]+")) {
-                        aux = new LexemaComErros("NUM", token,linha, i);
+                        aux = new LexemaComErros("NUM", token,linha, colunas.get(0));
                          lexErros.add(aux);
                     }
                 }
@@ -173,9 +179,9 @@ public class AnalisadorLexico {
                 linha++;
 
             }
-            for (int i = 0; i < lexErros.size(); i++) {
-                System.out.println(lexErros.get(i).descIdentificador + " " + lexErros.get(i).indentificador + " " +lexErros.get(i).linhaLida + " " +lexErros.get(i).colunaLida);
-            }
+//            for (int i = 0; i < lexErros.size(); i++) {
+//                System.out.println(lexErros.get(i).descIdentificador + " " + lexErros.get(i).indentificador + " " +lexErros.get(i).linhaLida + " " +lexErros.get(i).colunaLida);
+//            }
 
         } catch (FileNotFoundException e) {
             throw new Error(e + "Erro ao abrir o arquivo");
